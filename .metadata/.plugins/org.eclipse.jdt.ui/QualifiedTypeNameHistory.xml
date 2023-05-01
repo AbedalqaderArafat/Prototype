@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="javax.swing.ImageIcon"/>
+    <fullyQualifiedTypeName name="java.awt.Image"/>
+    <fullyQualifiedTypeName name="java.awt.BorderLayout"/>
+    <fullyQualifiedTypeName name="org.apache.poi.ss.usermodel.CellType"/>
+    <fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
+    <fullyQualifiedTypeName name="javax.imageio.ImageIO"/>
+    <fullyQualifiedTypeName name="java.awt.image.BufferedImage"/>
+    <fullyQualifiedTypeName name="javax.swing.JTextArea"/>
+    <fullyQualifiedTypeName name="javax.swing.BorderFactory"/>
+    <fullyQualifiedTypeName name="javax.swing.JList"/>
+    <fullyQualifiedTypeName name="javax.swing.DefaultListModel"/>
+    <fullyQualifiedTypeName name="javax.swing.JFrame"/>
+    <fullyQualifiedTypeName name="java.awt.Color"/>
+    <fullyQualifiedTypeName name="org.apache.poi.xssf.usermodel.XSSFWorkbook"/>
+    <fullyQualifiedTypeName name="org.apache.poi.sl.usermodel.Sheet"/>
+    <fullyQualifiedTypeName name="org.apache.logging.log4j.core.tools.picocli.CommandLine.Help.TextTable.Cell"/>
+    <fullyQualifiedTypeName name="org.apache.poi.ss.usermodel.Sheet"/>
+    <fullyQualifiedTypeName name="java.io.File"/>
+    <fullyQualifiedTypeName name="javax.swing.text.html.HTMLDocument.Iterator"/>
+    <fullyQualifiedTypeName name="java.util.Iterator"/>
+    <fullyQualifiedTypeName name="org.apache.poi.ss.usermodel.Row"/>
+    <fullyQualifiedTypeName name="org.apache.poi.ss.usermodel.Cell"/>
+    <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
+    <fullyQualifiedTypeName name="FrontPage2"/>
+    <fullyQualifiedTypeName name="java.io.IOException"/>
+</qualifiedTypeNameHistroy>

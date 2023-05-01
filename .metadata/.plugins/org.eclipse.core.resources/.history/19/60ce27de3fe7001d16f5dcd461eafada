@@ -1,0 +1,61 @@
+import java.awt.Image;
+
+public class Book {
+    private String name;
+    private Image image;
+    private String description;
+    private int timesRented;
+    private int maxRentalCount;
+    
+    public Book(String name, Image image, String description, int timesRented, int maxRentalCount) {
+        this.name = name;
+        this.image = image;
+        this.description = description;
+        this.timesRented = timesRented;
+        this.maxRentalCount = maxRentalCount;
+    }
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getTimesRented() {
+        return timesRented;
+    }
+
+    public void setTimesRented(int timesRented) {
+        this.timesRented = timesRented;
+    }
+
+    public int getMaxRentalCount() {
+        return maxRentalCount;
+    }
+
+    public void setMaxRentalCount(int maxRentalCount) {
+        this.maxRentalCount = maxRentalCount;
+    }
+    
+    public boolean isRentable() {
+        return timesRented < maxRentalCount;
+    }
+}

@@ -1,0 +1,65 @@
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class UserManager {
+    private static UserManager instance;
+
+    private Map<String, String> userCredentials = new HashMap<>();
+    private String currentUser = null;
+
+    private UserManager() {
+        // Initialize user credentials from Excel sheet
+        try {
+            FileInputStream file = new FileInputStream("users.xlsx");
+            Workbook workbook = new XSSFWorkbook(file);
+            Sheet sheet = workbook.getSheet("users");
+            for (Row row : sheet) {
+                Cell usernameCell = row.getCell(0);
+                Cell passwordCell = row.getCell(1);
+                if (usernameCell != null && passwordCell != null) {
+                    String username = usernameCell.getStringCellValue();
+                    String password = passwordCell.getStringCellValue();
+                    userCredentials.put(username, password);
+                }
+            }
+            workbook.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static UserManager getInstance() {
+        if (instance == null) {
+            instance = new UserManager();
+        }
+        return instance;
+    }
+
+    public boolean signIn(String username, String password) {
+        if (userCredentials.containsKey(username) && userCredentials.get(username).equals(password)) {
+            currentUser = username;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isSignedIn() {
+        return currentUser != null;
+    }
+
+    public String getCurrentUser() {
+        return currentUser;
+    }
+
+    public void signOut() {
+        currentUser = null;
+    }
+}

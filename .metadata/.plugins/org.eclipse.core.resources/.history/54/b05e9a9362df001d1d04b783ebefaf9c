@@ -1,0 +1,190 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.event.*;
+import java.awt.Image;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import javax.imageio.ImageIO;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class Search3 extends JFrame implements ListSelectionListener, ActionListener {
+    private JList bookList;
+    private JScrollPane bookScroll;
+    private JButton searchButton;
+    private JTextField searchField;
+    private ArrayList bookData;
+
+    public Search3() {
+        super("Book List");
+        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        getContentPane().setLayout(null);
+        setSize(800, 600);
+
+        // Load book data from Excel sheet
+       
+
+        // Create book list and add to scroll pane
+        DefaultListModel model = new DefaultListModel();
+        bookList = new JList(model);
+        bookList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        bookList.addListSelectionListener(this);
+        bookScroll = new JScrollPane(bookList);
+        bookScroll.setBounds(26, 394, 1845, 621);
+        getContentPane().add(bookScroll);
+
+        // Create search field and button
+        searchField = new JTextField();
+        searchField.setBounds(26, 331, 1322, 52);
+        getContentPane().add(searchField);
+        searchButton = new JButton("Search");
+        searchButton.setBounds(1358, 331, 513, 52);
+        searchButton.addActionListener(this);
+        getContentPane().add(searchButton);
+        getContentPane().setLayout(null);
+		ImageIcon Icon = new ImageIcon("KUSTAR_Logo.jpg");
+		Image image = Icon.getImage().getScaledInstance(1904, 315, Image.SCALE_SMOOTH);
+	    ImageIcon newIcon = new ImageIcon(image);
+		JLabel Logo = new JLabel(newIcon);
+		Logo.setBounds(0, 0, 1904, 275);
+		getContentPane().add(Logo);
+		
+		
+		
+		JLabel lblNewLabel_1 = new JLabel("New label");
+		lblNewLabel_1.setBounds(487, 394, 406, 619);
+		getContentPane().add(lblNewLabel_1);
+		
+		
+		//*************************************************************************************************************=
+		 try {
+	            FileInputStream excelFile = new FileInputStream(new File("Books.xlsx"));
+	            XSSFWorkbook workbook = new XSSFWorkbook(excelFile);
+	            Sheet sheet = workbook.getSheetAt(0);
+	            Iterator<Row> rowIterator = sheet.iterator();
+	            // Skip first row
+	            rowIterator.next();
+	            while (rowIterator.hasNext()) {
+	                Row row = rowIterator.next();
+	                Cell nameCell = row.getCell(0);
+	                Cell imageCell = row.getCell(1);
+	                Cell descriptionCell = row.getCell(2);
+	                Cell rentalCountCell = row.getCell(5);
+	                Cell maxRentalCountCell = row.getCell(4);
+	                Cell statusCell = row.getCell(3);
+	                String name = nameCell.getStringCellValue();
+	                String imageName = imageCell.getStringCellValue();
+	                String imagePath = "BookImages/" + imageName;
+	                File imageFile = new File(imagePath);
+	                Image image2 = ImageIO.read(imageFile);
+	                String description = descriptionCell.getStringCellValue();
+	                int rentalCount = (int) rentalCountCell.getNumericCellValue();
+	                int maxRentalCount = (int) maxRentalCountCell.getNumericCellValue();
+	                int counterValue = rentalCount;
+	                String status = statusCell.getStringCellValue();
+	                // Only change status if counter value exceeds x
+	                if (counterValue > 10) {
+	                    if (status.equals("available")) {
+	                        statusCell.setCellValue("Rented Out");
+	                    } else if (status.equals("Rented Out")) {
+	                        statusCell.setCellValue("available");
+	                    }
+	                }
+	                
+	                String S = name;
+	                
+	                model.addElement(S);
+	                
+	            }
+	            workbook.close();
+	            excelFile.close();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+		 //********************************************************************************************************************
+		
+        setVisible(true);
+        Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
+
+        setSize(1920, 1080);
+
+        setLocation(screenDim.width/2 - getWidth()/2, screenDim.height/2 - getHeight()/2);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    
+
+    
+    
+    
+
+        bookList.addMouseListener(new MouseAdapter() {
+        	public void mouseClicked(MouseEvent event) {
+        		if (event.getClickCount() == 2) {
+        			 try {
+        			bookScroll.setBounds(903, 394, 968, 621);
+        			FileInputStream excelFile = new FileInputStream(new File("Books.xlsx"));
+    	            XSSFWorkbook workbook = new XSSFWorkbook(excelFile);
+    	            Sheet sheet = workbook.getSheetAt(0);
+    	            Iterator<Row> rowIterator = sheet.iterator();
+					while (rowIterator.hasNext()) {
+     	                Row row = rowIterator.next();
+     	                Cell nameCell = row.getCell(0);
+     	                Cell imageCell = row.getCell(1);
+     	                String imageName = imageCell.getStringCellValue();
+     	                if(bookList.getSelectedValue()!= nameCell) {
+     	                	continue;
+     	                }
+     	                else {
+    	                	String imagePath = "BookImages/" + imageName;
+           	
+    	                	JLabel Image = new JLabel(imagePath);
+    	                	Image.setBounds(26, 396, 441, 619);
+    	                	getContentPane().add(Image);
+    	                	break;
+     	                }
+					}} catch (IOException e) {
+			            e.printStackTrace();
+			        }
+					
+        			if (event.getClickCount() == 2) {
+        				String Name = (String) bookList.getSelectedValue();
+                
+        				int result = JOptionPane.showConfirmDialog(Search3.this, "Do you want to rent " + Name + "?");
+                
+        				if (result == JOptionPane.YES_OPTION) { }
+        			}}
+        	}
+        
+        });}
+    
+    
+
+   
+    public static void main(String[] args) {
+        new Search3();
+    }
+
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+}
+

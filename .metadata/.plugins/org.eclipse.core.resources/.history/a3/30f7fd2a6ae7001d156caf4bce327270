@@ -1,0 +1,44 @@
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Toolkit;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+
+public class SignIn extends JFrame {
+
+	private JPanel contentPane;
+
+	/**
+	 * Launch the application.
+	 */
+	
+	
+
+	/**
+	 * Create the frame.
+	 */
+	public SignIn() {
+		getContentPane().setBackground(new Color(154,198,255));
+		Dimension screenDim1 = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize(1920, 1080);
+        setLocation(screenDim1.width/2 - getWidth()/2, screenDim1.height/2 - getHeight()/2);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        getContentPane().setLayout(null);
+        
+        JLabel SignLab = new JLabel("Sign In");
+        SignLab.setFont(new Font("Verdana", Font.PLAIN, 71));
+        SignLab.setHorizontalAlignment(SwingConstants.CENTER);
+        SignLab.setBounds(481, 131, 942, 217);
+        
+        SignLab.setBackground(Color.WHITE);
+        
+        getContentPane().add(SignLab);
+   
+	}
+}

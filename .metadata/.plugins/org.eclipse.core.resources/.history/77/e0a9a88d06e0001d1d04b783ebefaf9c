@@ -1,0 +1,400 @@
+import java.awt.EventQueue;
+import java.awt.Image;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+
+import org.apache.poi.hpsf.Date;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Iterator;
+import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JScrollBar;
+import javax.swing.ScrollPaneConstants;
+import java.awt.SystemColor;
+
+public class FrontPage extends JFrame {
+	private JList<String> eventsPanel;
+    private JScrollPane eventsScrollPane;
+    private JPanel contentPane;
+
+
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					FrontPage frame = new FrontPage();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	
+	public FrontPage() {
+		
+		 
+	            
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 1037, 654);
+		contentPane = new JPanel();
+		contentPane.setBackground(new Color(230, 241, 255));
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		ImageIcon Icon = new ImageIcon("KUSTAR_Logo.jpg");
+		Image image = Icon.getImage().getScaledInstance(1904, 315, Image.SCALE_SMOOTH);
+	    ImageIcon newIcon = new ImageIcon(image);
+	    JButton LoginButton = new JButton("Login");
+		JLabel Logo = new JLabel(newIcon);
+		Logo.setBounds(0, 0, 1904, 275);
+		contentPane.add(Logo);
+		
+		
+		LoginButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		LoginButton.setFont(new Font("Verdana", Font.PLAIN, 23));
+		LoginButton.setBounds(1626, 0, 278, 62);
+		LoginButton.setBackground(Color.WHITE);
+		
+		contentPane.add(LoginButton);
+		
+		JButton About = new JButton("About");
+		About.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				About A = new About();
+				A.setVisible(true);
+			}
+		});
+		About.setFont(new Font("Verdana", Font.PLAIN, 23));
+		About.setBounds(10, 279, 456, 62);
+		About.setBackground(new Color(233, 232, 255));
+		contentPane.add(About);
+		
+		JButton Favourites = new JButton("Favourites");
+		Favourites.setFont(new Font("Verdana", Font.PLAIN, 23));
+		Favourites.setBackground(new Color(233, 232, 255));
+		Favourites.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				FavBooks Books = new FavBooks();
+				Books.setVisible(true);
+			}
+		});
+		Favourites.setBounds(481, 279, 456, 62);
+		contentPane.add(Favourites);
+		
+		JButton Genres = new JButton("Genres");
+		Genres.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				Genre G = new Genre();
+				G.setVisible(true);
+			}
+		});
+		Genres.setFont(new Font("Verdana", Font.PLAIN, 23));
+		Genres.setBounds(961, 279, 456, 62);
+		Genres.setBackground(new Color(233, 232, 255));
+		contentPane.add(Genres);
+		
+		JButton Search = new JButton("Search");
+		Search.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				Search3 S = new Search3();
+				S.setVisible(true);
+			}
+		});
+		Search.setFont(new Font("Verdana", Font.PLAIN, 23));
+		Search.setBounds(1438, 279, 456, 62);
+		Search.setBackground(new Color(233, 232, 255));
+		contentPane.add(Search);
+		
+		setResizable(false);
+		LoginButton.setFocusPainted(false);
+		About.setFocusPainted(false);
+		Favourites.setFocusPainted(false);
+		Genres.setFocusPainted(false);
+		Search.setFocusPainted(false);
+        eventsPanel = new JList<String>();
+        DefaultListModel<String> model = new DefaultListModel<String>();
+	     eventsPanel = new JList<String>(model);
+	     eventsPanel.setCellRenderer(new DefaultListCellRenderer());
+        
+
+        
+        eventsScrollPane = new JScrollPane();
+        eventsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        eventsScrollPane.getHorizontalScrollBar().setValue(0);
+        eventsScrollPane.setViewportBorder(null);
+        eventsScrollPane.setMaximumSize(getMaximumSize());
+        eventsScrollPane.setBounds(10, 409, 1884, 293);
+        eventsScrollPane.setPreferredSize(new Dimension(1858, 275));
+        contentPane.add(eventsScrollPane);
+                
+
+       
+       eventsScrollPane.setViewportView(eventsPanel);
+       eventsPanel.setBackground(new Color(230, 241, 255));
+                        
+        eventsPanel.setLayout(null);
+        eventsPanel.setPreferredSize(new Dimension(1911, 275));
+        
+        JLabel Events = new JLabel("Upcoming Events");
+        eventsScrollPane.setColumnHeaderView(Events);
+        
+        JScrollPane WeeklyScroll = new JScrollPane();
+        WeeklyScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        WeeklyScroll.setViewportBorder(null);
+        WeeklyScroll.setPreferredSize(new Dimension(1858, 275));
+        WeeklyScroll.setMaximumSize(new Dimension(2147483647, 2147483647));
+        WeeklyScroll.setBounds(10, 713, 1884, 293);
+        contentPane.add(WeeklyScroll);
+        
+        JList weekMostRented = new JList();
+        weekMostRented.setPreferredSize(new Dimension(1911, 275));
+        weekMostRented.setBackground(new Color(230, 241, 255));
+        WeeklyScroll.setViewportView(weekMostRented);
+        
+        JLabel Books = new JLabel("Weekly Most Rented");
+        WeeklyScroll.setColumnHeaderView(Books);
+      //*************************************************************************************************************=
+		 try {
+	            FileInputStream excelFile = new FileInputStream(new File("Events.xlsx"));
+	            XSSFWorkbook workbook = new XSSFWorkbook(excelFile);
+	            Sheet sheet = workbook.getSheetAt(0);
+	            Iterator<Row> rowIterator = sheet.iterator();
+	            // Skip first row
+	            rowIterator.next();
+	            while (rowIterator.hasNext()) {
+	                Row row = rowIterator.next();
+	                Cell nameCell = row.getCell(0);
+	                Cell dateCell = row.getCell(2);
+	                String name = nameCell.getStringCellValue();
+	                System.out.print(name);
+	                String dateString = "";
+	                if (dateCell.getCellType() == CellType.NUMERIC) {
+	                    java.util.Date date2 = dateCell.getDateCellValue();
+	                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	                    dateString = dateFormat.format(date2);
+	                } else {
+	                    dateString = dateCell.getStringCellValue();
+	                }
+	                model.addElement(name + " - " + dateString);
+	            }
+	            workbook.close();
+	            excelFile.close();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+		 //********************************************************************************************************************
+		
+       setVisible(true);
+       Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
+
+       setSize(1920, 1080);
+
+       setLocation(screenDim.width/2 - getWidth()/2, screenDim.height/2 - getHeight()/2);
+       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+   
+       JButton Back = new JButton("←");
+       Back.setFocusPainted(false);
+       Back.setBackground(new Color(255,247, 247));
+   
+   
+       eventsPanel.addMouseListener(new MouseAdapter() {
+       	public void mouseClicked(MouseEvent event) {
+       		if (event.getClickCount() == 2) {
+       			
+       		}
+       	}
+       
+       });
+       
+       JTextField searchField = new JTextField();
+       searchField.setBounds(26, 331, 1322, 52);
+
+       JButton searchButton = new JButton("Search");
+       searchButton.setBounds(1358, 331, 513, 52);
+       searchButton.setFocusPainted(false);
+       searchButton.addActionListener(new ActionListener() {
+           public void actionPerformed(ActionEvent e) {
+           	
+           	getContentPane().removeAll();
+           	Logo.setBounds(0, 0, 1904, 275);
+       		getContentPane().add(Logo);
+       		eventsScrollPane.setBounds(25, 390, 1850, 630);
+       	    getContentPane().add(eventsScrollPane);
+       	    getContentPane().add(searchField);
+               getContentPane().add(searchButton);
+               getContentPane().add(Back);
+               String searchText = searchField.getText().toLowerCase();
+               DefaultListModel<String> model = new DefaultListModel<>();
+               try {
+                   FileInputStream excelFile = new FileInputStream(new File("Books.xlsx"));
+                   XSSFWorkbook workbook = new XSSFWorkbook(excelFile);
+                   Sheet sheet = workbook.getSheetAt(0);
+                   Iterator<Row> rowIterator = sheet.iterator();
+                   rowIterator.next();
+                   while (rowIterator.hasNext()) {
+                       Row row = rowIterator.next();
+                       Cell nameCell = row.getCell(0);
+                       String bookName = nameCell.getStringCellValue().toLowerCase();
+                       if (bookName.contains(searchText)) {
+                           model.addElement(nameCell.getStringCellValue());
+                       }
+                   }
+                   eventsPanel.setModel(model);
+                   excelFile.close();
+               } catch (IOException ex) {
+                   ex.printStackTrace();
+               }
+           }
+       });
+
+       JPanel searchBarPanel = new JPanel();
+       searchBarPanel.setBackground(new Color(230, 241, 255));
+       searchBarPanel.setLayout(null);
+       searchBarPanel.setBounds(0, 270, 1902, 137);
+       searchBarPanel.add(searchField);
+       searchBarPanel.add(searchButton);
+       getContentPane().add(searchBarPanel);
+       
+       
+
+       Back.addActionListener(new ActionListener() {
+       	public void actionPerformed(ActionEvent e) {
+       		dispose();
+       		FrontPage S = new FrontPage();
+       		S.setVisible(true);
+       		
+       	}
+       });
+       Back.setFont(new Font("Arial", Font.PLAIN, 20));
+       Back.setBounds(0, 0, 82, 30);
+       getContentPane().add(Back);
+
+       	
+       
+       eventsPanel.addMouseListener(new MouseAdapter() {
+           public void mouseClicked(MouseEvent event) {
+               if (event.getClickCount() == 1) {
+                   try {
+                   	
+                       JLabel label = new JLabel();
+                       JTextArea description = new JTextArea();
+                       label.setIcon(null);
+                       description.setText("");
+
+                       getContentPane().removeAll();
+
+                       FileInputStream excelFile = new FileInputStream(new File("Events.xlsx"));
+                       XSSFWorkbook workbook = new XSSFWorkbook(excelFile);
+                       Sheet sheet = workbook.getSheetAt(0);
+                       Iterator<Row> rowIterator = sheet.iterator();
+                       rowIterator.next();
+                       while (rowIterator.hasNext()) {
+
+                           Row row = rowIterator.next();
+                           Cell nameCell = row.getCell(0);
+                           Cell imageCell = row.getCell(1);
+                           Cell descriptionCell = row.getCell(3);
+                           Cell dateCell = row.getCell(2);
+                           String name = nameCell.getStringCellValue();
+                           String imageName = imageCell.getStringCellValue();
+                           String descriptionText = descriptionCell.getStringCellValue();
+                           java.util.Date date2 = dateCell.getDateCellValue();
+                           SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                           String dateString = dateFormat.format(date2);                     
+                           
+                           if (!name.equals(eventsPanel.getSelectedValue())) {
+                               continue;
+                           } else {
+
+                               ImageIcon icon = new ImageIcon("Event Images/" + imageName);
+                               Image image = icon.getImage().getScaledInstance(441, 619, Image.SCALE_SMOOTH);
+                               label = new JLabel(new ImageIcon(image));
+                               label.setBounds(26, 396, 441, 619);
+                               getContentPane().add(label);
+
+                               description = new JTextArea(name + " - " + dateString + " \n\n" + descriptionText);
+                                
+                               description.setLineWrap(true);
+                               description.setWrapStyleWord(true);
+                               description.setFont(new Font("Courier New", Font.BOLD, 18));
+                               JScrollPane scrollPane = new JScrollPane(description);
+                               scrollPane.setBounds(487, 394, 406, 619);
+                               getContentPane().add(scrollPane);
+
+                               eventsScrollPane.setBounds(903, 394, 968, 621);
+                               getContentPane().add(eventsScrollPane);
+                               getContentPane().validate();
+                               getContentPane().repaint();
+                               
+                               getContentPane().add(searchField);
+                               getContentPane().add(searchButton);
+                               getContentPane().add(Back);
+                               Logo.setBounds(0, 0, 1904, 275);
+                       		getContentPane().add(Logo);
+                           }
+                       }
+                   } catch (IOException e) {
+                       e.printStackTrace();
+                   }
+
+               }
+           }
+
+       });
+		
+        Dimension screenDim1 = Toolkit.getDefaultToolkit().getScreenSize();
+
+        setSize(1920, 1080);
+
+        setLocation(screenDim1.width/2 - getWidth()/2, screenDim1.height/2 - getHeight()/2);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+	}
+}

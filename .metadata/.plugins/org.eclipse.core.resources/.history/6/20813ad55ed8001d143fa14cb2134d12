@@ -1,0 +1,207 @@
+import java.awt.EventQueue;
+import java.awt.Image;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JScrollBar;
+
+public class FrontPage extends JFrame {
+	private JPanel eventsPanel;
+    private JScrollPane eventsScrollPane;
+    private JPanel contentPane;
+
+
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					FrontPage frame = new FrontPage();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	
+	public FrontPage() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 1037, 654);
+		contentPane = new JPanel();
+		contentPane.setBackground(new Color(230, 241, 255));
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		ImageIcon Icon = new ImageIcon("KUSTAR_Logo.jpg");
+		Image image = Icon.getImage().getScaledInstance(1904, 315, Image.SCALE_SMOOTH);
+	    ImageIcon newIcon = new ImageIcon(image);
+	    JButton LoginButton = new JButton("Login");
+		JLabel Logo = new JLabel(newIcon);
+		Logo.setBounds(0, 0, 1904, 315);
+		contentPane.add(Logo);
+		
+		
+		LoginButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		LoginButton.setFont(new Font("Verdana", Font.PLAIN, 23));
+		LoginButton.setBounds(1626, 0, 278, 62);
+		LoginButton.setBackground(Color.WHITE);
+		
+		contentPane.add(LoginButton);
+		
+		JButton About = new JButton("About");
+		About.setFont(new Font("Verdana", Font.PLAIN, 23));
+		About.setBounds(10, 326, 456, 62);
+		About.setBackground(new Color(233, 232, 255));
+		contentPane.add(About);
+		
+		JButton Favourites = new JButton("Favourites");
+		Favourites.setFont(new Font("Verdana", Font.PLAIN, 23));
+		Favourites.setBackground(new Color(233, 232, 255));
+		Favourites.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		Favourites.setBounds(481, 326, 456, 62);
+		contentPane.add(Favourites);
+		
+		JButton Genres = new JButton("Genres");
+		Genres.setFont(new Font("Verdana", Font.PLAIN, 23));
+		Genres.setBounds(961, 326, 456, 62);
+		Genres.setBackground(new Color(233, 232, 255));
+		contentPane.add(Genres);
+		
+		JButton Search = new JButton("Search");
+		Search.setFont(new Font("Verdana", Font.PLAIN, 23));
+		Search.setBounds(1438, 326, 456, 62);
+		Search.setBackground(new Color(233, 232, 255));
+		contentPane.add(Search);
+		
+		setResizable(false);
+		LoginButton.setFocusPainted(false);
+		About.setFocusPainted(false);
+		Favourites.setFocusPainted(false);
+		Genres.setFocusPainted(false);
+		Search.setFocusPainted(false);
+        eventsScrollPane = new JScrollPane();
+        eventsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        eventsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        eventsScrollPane.setPreferredSize(new Dimension(1858, 275));
+
+        // add events scroll pane to content pane
+        
+        
+		  // create events panel with absolute layout
+        eventsPanel = new JPanel();
+        eventsPanel.setBounds(40, 433, 1832, 275);
+        eventsPanel.setBackground(new Color(230, 241, 255));
+        contentPane.add(eventsPanel);
+        eventsPanel.setLayout(null);
+        eventsPanel.setPreferredSize(new Dimension(1858, 275));
+        eventsPanel.add(eventsScrollPane, BorderLayout.CENTER);
+        
+        JLabel Outline = new JLabel("");
+        Outline.setBounds(-13, 25, 1857, 315);
+        eventsPanel.add(Outline);
+        Outline.setBorder(blackline);
+        Border blackline = BorderFactory.createLineBorder(Color.black);
+        
+
+        // read events information from Excel sheet
+       
+        File file = new File("Events.xlsx");
+        try (Workbook workbook = WorkbookFactory.create(file)) {
+            Sheet sheet = workbook.getSheetAt(0);
+            int x = 0;
+            int y = 0;
+            for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
+                Row row = sheet.getRow(i);
+                if (row == null) {
+                    break;
+                }
+                String eventName = row.getCell(0).getStringCellValue();
+                String eventImagePath = row.getCell(1).getStringCellValue();
+
+                ImageIcon eventImage = new ImageIcon("Event Images/" + eventImagePath);
+                Image Image = eventImage.getImage();
+                Image scaledImage = Image.getScaledInstance(330, 150, java.awt.Image.SCALE_AREA_AVERAGING);
+                eventImage = new ImageIcon(scaledImage);
+                
+                String date;
+                if (row.getCell(2).getCellType() == CellType.NUMERIC) {
+                    date = new SimpleDateFormat("MM/dd/yyyy").format(row.getCell(2).getDateCellValue());
+                } else {
+                    date = row.getCell(2).getStringCellValue();
+                }
+                String eventDescription = row.getCell(3).getStringCellValue();
+
+                String Text = date + "  \n" + eventDescription;
+
+                // create event components and add to events panel
+                JLabel eventNameLabel = new JLabel(eventName);
+                eventNameLabel.setBounds(x, 10, 200, 20);
+                JLabel eventImageLabel = new JLabel(eventImage);
+                eventImageLabel.setBounds(x, 10, 300, 200);
+
+                JTextArea eventDescriptionTextArea = new JTextArea(Text);
+                eventDescriptionTextArea.setBounds(x, 200, 200, 200);
+
+                eventDescriptionTextArea.setEditable(false);
+                eventDescriptionTextArea.setBackground(new Color(230, 241, 255));
+
+                eventsPanel.add(eventNameLabel);
+                eventsPanel.add(eventImageLabel);
+                eventsPanel.add(eventDescriptionTextArea);
+                y += 10;
+                x += 330; // add some padding between events
+
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+		
+		
+		
+		
+        Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
+
+        setSize(1920, 1080);
+
+        setLocation(screenDim.width/2 - getWidth()/2, screenDim.height/2 - getHeight()/2);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+	}
+}

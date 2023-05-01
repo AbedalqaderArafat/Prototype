@@ -1,0 +1,50 @@
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Image;
+import java.awt.Toolkit;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+public class SignIn extends JFrame {
+
+	private JPanel contentPane;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					SignIn frame = new SignIn();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public SignIn() {
+		Dimension screenDim1 = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize(1920, 1080);
+        setLocation(screenDim1.width/2 - getWidth()/2, screenDim1.height/2 - getHeight()/2);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        getContentPane().setLayout(null);
+
+        ImageIcon Icon = new ImageIcon("KUSTAR_Logo.jpg");
+		Image image1 = Icon.getImage().getScaledInstance(1904, 315, Image.SCALE_SMOOTH);
+	    ImageIcon newIcon = new ImageIcon(image1);
+		JLabel Logo = new JLabel(newIcon);
+		Logo.setBounds(0, 0, 1904, 275);
+		getContentPane().add(Logo);
+	}
+
+}
